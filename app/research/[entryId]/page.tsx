@@ -133,7 +133,8 @@ export default function ResearchEntryPage() {
         <div>
           <h1 className="text-xl font-semibold text-text-primary">{entry.site_name}</h1>
           <p className="text-sm text-text-secondary mt-0.5">
-            {entry.site_city}, {entry.site_country} &middot; {entry.date}
+            {entry.site_city}, {entry.site_country} &middot;{' '}
+            {new Date(entry.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
           </p>
           <div className="flex items-center gap-3 mt-2">
             <StatusBadge status={entry.status} />
@@ -226,24 +227,24 @@ export default function ResearchEntryPage() {
               ))}
             </div>
           )}
-          <div className="flex gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto_auto] gap-2">
             <input
               value={newReading.title}
               onChange={(e) => setNewReading({ ...newReading, title: e.target.value })}
               placeholder="Title"
-              className="flex-1 px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             <input
               value={newReading.source}
               onChange={(e) => setNewReading({ ...newReading, source: e.target.value })}
               placeholder="Source"
-              className="w-28 px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             <input
               value={newReading.url}
               onChange={(e) => setNewReading({ ...newReading, url: e.target.value })}
               placeholder="URL"
-              className="w-32 px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
+              className="px-3 py-1.5 rounded-lg border border-border bg-bg text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
             />
             <button onClick={addReading} className="px-3 py-1.5 rounded-lg bg-accent text-white text-sm">
               Add
