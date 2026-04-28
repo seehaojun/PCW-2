@@ -75,7 +75,7 @@ export function DayCard({ day, isToday }: { day: TripDay; isToday: boolean }) {
                 <a
                   href={buildMapsUrl(day.accom_lat, day.accom_lng)}
                   target="_blank" rel="noopener noreferrer"
-                  className="text-xs text-accent hover:underline mt-0.5 inline-block"
+                  className="text-xs text-accent hover:underline mt-0.5 inline-block break-words"
                 >
                   {day.accom_address}
                 </a>

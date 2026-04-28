@@ -19,16 +19,6 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
-  const role = token.role as string
-
-  if ((path === '/research' || path.startsWith('/research/')) && role !== 'ck') {
-    return NextResponse.redirect(new URL('/family', req.url))
-  }
-
-  if (path === '/networking' && role !== 'hj') {
-    return NextResponse.redirect(new URL('/family', req.url))
-  }
-
   return NextResponse.next()
 }
 

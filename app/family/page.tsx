@@ -57,7 +57,7 @@ export default function FamilyPage() {
       <OfflineBanner />
       <CityNav selected={city} onSelect={setCity} onScrollToToday={scrollToToday} />
       <div className="flex-1 flex max-w-6xl mx-auto w-full px-4 py-6 gap-6">
-        <div ref={containerRef} className="flex-1 space-y-4">
+        <div ref={containerRef} className="flex-1 min-w-0 space-y-4">
           {cityDays.map((day) => (
             <DayCard key={day.id} day={day} isToday={day.date === today} />
           ))}

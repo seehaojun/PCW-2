@@ -12,16 +12,11 @@ export function NavBar() {
 
   const role = session.user.role
 
-  const links: { href: string; label: string }[] = []
-  if (role === 'ck') {
-    links.push({ href: '/research', label: 'Research' })
-    links.push({ href: '/family', label: 'Family' })
-  } else if (role === 'hj') {
-    links.push({ href: '/networking', label: 'Networking' })
-    links.push({ href: '/family', label: 'Family' })
-  } else {
-    links.push({ href: '/family', label: 'Family' })
-  }
+  const links = [
+    { href: '/family', label: 'Family' },
+    { href: '/research', label: 'Research' },
+    { href: '/networking', label: 'Networking' },
+  ]
 
   return (
     <nav className="sticky top-0 z-50 bg-surface border-b border-border px-4 py-3 flex items-center justify-between">
