@@ -14,13 +14,15 @@ interface ResearchEntry {
 
 export function ResearchEntryCard({ entry }: { entry: ResearchEntry }) {
   return (
-    <Link href={`/research/${entry.id}`}>
+    <Link href={`/research/${entry.id}`} className="block no-underline">
       <div className="bg-surface rounded-xl shadow-sm border border-border p-5 hover:shadow-md transition-shadow cursor-pointer">
         <div className="flex items-start justify-between">
           <div>
             <p className="font-semibold text-text-primary">{entry.site_name}</p>
             <p className="text-sm text-text-secondary mt-0.5">{entry.site_city}</p>
-            <p className="font-mono text-xs text-text-secondary mt-1">{entry.date}</p>
+            <p className="font-mono text-xs text-text-secondary mt-1">
+              {new Date(entry.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+            </p>
           </div>
           <StatusBadge status={entry.status} />
         </div>
