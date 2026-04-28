@@ -1,15 +1,10 @@
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
-import { authOptions } from '@/lib/auth'
 import { getDb } from '@/lib/db'
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ entryId: string }> }
 ) {
-  const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
   const { entryId } = await params
   const sql = getDb()
   const rows = await sql`
@@ -26,11 +21,6 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ entryId: string }> }
 ) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ck') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
   const { entryId } = await params
   const body = await req.json()
   const sql = getDb()

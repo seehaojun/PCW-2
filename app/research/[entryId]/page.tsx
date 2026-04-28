@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/NavBar'
 import { StatusBadge } from '@/components/StatusBadge'
 import { VoiceRecorder } from '@/components/VoiceRecorder'
@@ -37,7 +36,6 @@ interface Entry {
 
 export default function ResearchEntryPage() {
   const { entryId } = useParams<{ entryId: string }>()
-  const { status: authStatus } = useSession()
   const [entry, setEntry] = useState<Entry | null>(null)
   const [loading, setLoading] = useState(true)
   const [lightboxUrl, setLightboxUrl] = useState<string | null>(null)
@@ -58,8 +56,8 @@ export default function ResearchEntryPage() {
   }, [entryId])
 
   useEffect(() => {
-    if (authStatus === 'authenticated') fetchEntry()
-  }, [authStatus, fetchEntry])
+    fetchEntry()
+  }, [fetchEntry])
 
   async function patch(body: Partial<Entry>) {
     setSaving(true)
@@ -103,7 +101,7 @@ export default function ResearchEntryPage() {
     patch({ readings: updated } as unknown as Partial<Entry>)
   }
 
-  if (loading || authStatus === 'loading') {
+  if (loading) {
     return (
       <>
         <NavBar />

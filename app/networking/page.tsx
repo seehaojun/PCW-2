@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/NavBar'
 import { CityNav, CITY_DATES } from '@/components/CityNav'
 import { NetworkingCard } from '@/components/NetworkingCard'
@@ -16,20 +15,18 @@ interface TripDay {
 }
 
 export default function NetworkingPage() {
-  const { status } = useSession()
   const [days, setDays] = useState<TripDay[]>([])
   const [city, setCity] = useState('Vienna')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (status !== 'authenticated') return
     fetch('/api/trip-days')
       .then((r) => r.json())
       .then((data) => {
         setDays(data)
         setLoading(false)
       })
-  }, [status])
+  }, [])
 
   const cityDays = days
     .filter((d) => {
@@ -41,7 +38,7 @@ export default function NetworkingPage() {
     })
     .filter((d) => d.hj_networking)
 
-  if (status === 'loading' || loading) {
+  if (loading) {
     return (
       <>
         <NavBar />

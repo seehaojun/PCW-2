@@ -1,14 +1,7 @@
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { put, del } from '@vercel/blob'
-import { authOptions } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ck') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
   const formData = await req.formData()
   const file = formData.get('file') as File
   const folder = formData.get('folder') as string
@@ -26,11 +19,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== 'ck') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
   const { url } = await req.json()
   if (!url) return NextResponse.json({ error: 'Missing url' }, { status: 400 })
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/NavBar'
 import { CityNav, CITY_DATES } from '@/components/CityNav'
 import { ResearchEntryCard } from '@/components/ResearchEntryCard'
@@ -17,20 +16,18 @@ interface ResearchEntry {
 }
 
 export default function ResearchPage() {
-  const { status } = useSession()
   const [entries, setEntries] = useState<ResearchEntry[]>([])
   const [city, setCity] = useState('Vienna')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (status !== 'authenticated') return
     fetch('/api/research')
       .then((r) => r.json())
       .then((data) => {
         setEntries(data)
         setLoading(false)
       })
-  }, [status])
+  }, [])
 
   const cityEntries = entries.filter((e) => {
     if (city === 'London') {
@@ -40,7 +37,7 @@ export default function ResearchPage() {
     return e.city === city
   })
 
-  if (status === 'loading' || loading) {
+  if (loading) {
     return (
       <>
         <NavBar />

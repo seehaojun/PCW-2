@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useRef, useCallback } from 'react'
-import { useSession } from 'next-auth/react'
 import { NavBar } from '@/components/NavBar'
 import { CityNav, CITY_DATES } from '@/components/CityNav'
 import { DayCard, type TripDay } from '@/components/DayCard'
@@ -9,21 +8,19 @@ import { AccomCard } from '@/components/AccomCard'
 import { OfflineBanner } from '@/components/OfflineBanner'
 
 export default function FamilyPage() {
-  const { status } = useSession()
   const [days, setDays] = useState<TripDay[]>([])
   const [city, setCity] = useState('Vienna')
   const [loading, setLoading] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (status !== 'authenticated') return
     fetch('/api/trip-days')
       .then((r) => r.json())
       .then((data) => {
         setDays(data)
         setLoading(false)
       })
-  }, [status])
+  }, [])
 
   const cityDays = days.filter((d) => {
     if (city === 'London') {
@@ -42,7 +39,7 @@ export default function FamilyPage() {
     }, 100)
   }, [today])
 
-  if (status === 'loading' || loading) {
+  if (loading) {
     return (
       <>
         <NavBar />
