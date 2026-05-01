@@ -29,6 +29,7 @@ interface Entry {
   text_notes: string | null
   description: string | null
   voice_clip_urls: string[]
+  voice_clip_transcriptions: string[]
   photo_urls: string[]
   readings: Reading[]
   published_at: string | null
@@ -49,6 +50,7 @@ export default function ResearchEntryPage() {
       const data = await res.json()
       data.readings = typeof data.readings === 'string' ? JSON.parse(data.readings) : (data.readings ?? [])
       data.voice_clip_urls = data.voice_clip_urls ?? []
+      data.voice_clip_transcriptions = data.voice_clip_transcriptions ?? []
       data.photo_urls = data.photo_urls ?? []
       setEntry(data)
     }
@@ -70,6 +72,7 @@ export default function ResearchEntryPage() {
       const data = await res.json()
       data.readings = typeof data.readings === 'string' ? JSON.parse(data.readings) : (data.readings ?? [])
       data.voice_clip_urls = data.voice_clip_urls ?? []
+      data.voice_clip_transcriptions = data.voice_clip_transcriptions ?? []
       data.photo_urls = data.photo_urls ?? []
       setEntry(data)
     }
@@ -166,20 +169,6 @@ export default function ResearchEntryPage() {
           </p>
         </div>
 
-        {/* Voice Clips */}
-        <VoiceRecorder
-          clips={(entry.voice_clip_urls ?? []).map((url, i) => ({ url, timestamp: i }))}
-          entryId={entry.id}
-          onClipAdded={(url) => {
-            const updated = [...(entry.voice_clip_urls ?? []), url]
-            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
-          }}
-          onClipRemoved={(url) => {
-            const updated = (entry.voice_clip_urls ?? []).filter((u) => u !== url)
-            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
-          }}
-        />
-
         {/* Photos */}
         <PhotoUploader
           photos={entry.photo_urls ?? []}
@@ -193,6 +182,41 @@ export default function ResearchEntryPage() {
             patch({ photo_urls: updated } as unknown as Partial<Entry>)
           }}
           onPhotoClick={setLightboxUrl}
+        />
+
+        {/* Voice Clips */}
+        <VoiceRecorder
+          clips={(entry.voice_clip_urls ?? []).map((url, i) => ({
+            url,
+            transcription: entry.voice_clip_transcriptions?.[i] ?? '',
+          }))}
+          entryId={entry.id}
+          onClipAdded={(url) => {
+            const urls = [...(entry.voice_clip_urls ?? []), url]
+            const transcriptions = [...(entry.voice_clip_transcriptions ?? []), '']
+            patch({
+              voice_clip_urls: urls,
+              voice_clip_transcriptions: transcriptions,
+            } as unknown as Partial<Entry>)
+          }}
+          onClipRemoved={(url) => {
+            const idx = (entry.voice_clip_urls ?? []).indexOf(url)
+            const urls = (entry.voice_clip_urls ?? []).filter((u) => u !== url)
+            const transcriptions = [...(entry.voice_clip_transcriptions ?? [])]
+            if (idx >= 0) transcriptions.splice(idx, 1)
+            patch({
+              voice_clip_urls: urls,
+              voice_clip_transcriptions: transcriptions,
+            } as unknown as Partial<Entry>)
+          }}
+          onTranscriptionReady={(url, transcription) => {
+            const idx = (entry.voice_clip_urls ?? []).indexOf(url)
+            if (idx < 0) return
+            const transcriptions = [...(entry.voice_clip_transcriptions ?? [])]
+            while (transcriptions.length <= idx) transcriptions.push('')
+            transcriptions[idx] = transcription
+            patch({ voice_clip_transcriptions: transcriptions } as unknown as Partial<Entry>)
+          }}
         />
 
         {/* Description (curated/published) */}

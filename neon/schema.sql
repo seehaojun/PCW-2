@@ -41,6 +41,7 @@ CREATE TABLE ck_research_entries (
   lng double precision,
   text_notes text,
   voice_clip_urls text[] DEFAULT '{}',
+  voice_clip_transcriptions text[] DEFAULT '{}',
   photo_urls text[] DEFAULT '{}',
   status text NOT NULL DEFAULT 'draft'
     CHECK (status IN ('draft', 'curated', 'published')),
