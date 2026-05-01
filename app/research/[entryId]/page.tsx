@@ -166,20 +166,6 @@ export default function ResearchEntryPage() {
           </p>
         </div>
 
-        {/* Voice Clips */}
-        <VoiceRecorder
-          clips={(entry.voice_clip_urls ?? []).map((url, i) => ({ url, timestamp: i }))}
-          entryId={entry.id}
-          onClipAdded={(url) => {
-            const updated = [...(entry.voice_clip_urls ?? []), url]
-            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
-          }}
-          onClipRemoved={(url) => {
-            const updated = (entry.voice_clip_urls ?? []).filter((u) => u !== url)
-            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
-          }}
-        />
-
         {/* Photos */}
         <PhotoUploader
           photos={entry.photo_urls ?? []}
@@ -193,6 +179,20 @@ export default function ResearchEntryPage() {
             patch({ photo_urls: updated } as unknown as Partial<Entry>)
           }}
           onPhotoClick={setLightboxUrl}
+        />
+
+        {/* Voice Clips */}
+        <VoiceRecorder
+          clips={(entry.voice_clip_urls ?? []).map((url, i) => ({ url, timestamp: i }))}
+          entryId={entry.id}
+          onClipAdded={(url) => {
+            const updated = [...(entry.voice_clip_urls ?? []), url]
+            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
+          }}
+          onClipRemoved={(url) => {
+            const updated = (entry.voice_clip_urls ?? []).filter((u) => u !== url)
+            patch({ voice_clip_urls: updated } as unknown as Partial<Entry>)
+          }}
         />
 
         {/* Description (curated/published) */}
