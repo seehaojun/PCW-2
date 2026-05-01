@@ -49,6 +49,10 @@ export async function PATCH(
     await sql`UPDATE ck_research_entries SET voice_clip_urls = ${body.voice_clip_urls} WHERE id = ${entryId}`
   }
 
+  if (body.voice_clip_transcriptions !== undefined) {
+    await sql`UPDATE ck_research_entries SET voice_clip_transcriptions = ${body.voice_clip_transcriptions} WHERE id = ${entryId}`
+  }
+
   if (body.photo_urls !== undefined) {
     await sql`UPDATE ck_research_entries SET photo_urls = ${body.photo_urls} WHERE id = ${entryId}`
   }
