@@ -24,9 +24,44 @@
   --color-accent-light: var(--accent-light);
   --color-warning: var(--warning);
   --color-success: var(--success);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
   background: var(--bg);
   color: var(--text-primary);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.pcw-city-label {
+  background: #fff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  font-size: 12px !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+  white-space: nowrap !important;
+}
+.pcw-city-label::before,
+.leaflet-tooltip-top.pcw-city-label::before {
+  display: none !important;
+}
+.pcw-stay-label {
+  background: #fff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 6px 8px !important;
+  font-size: 12px !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
+}
+.pcw-stay-label::before,
+.leaflet-tooltip-top.pcw-stay-label::before {
+  display: none !important;
+}
+.leaflet-container {
+  font-family: inherit !important;
+  background: #f7f6f3 !important;
 }

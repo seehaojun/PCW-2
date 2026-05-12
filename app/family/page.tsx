@@ -6,6 +6,7 @@ import { CityNav, CITY_DATES } from '@/components/CityNav'
 import { DayCard, type TripDay } from '@/components/DayCard'
 import { AccomCard } from '@/components/AccomCard'
 import { OfflineBanner } from '@/components/OfflineBanner'
+import { TripMap } from '@/components/TripMap'
 
 export default function FamilyPage() {
   const [days, setDays] = useState<TripDay[]>([])
@@ -53,6 +54,9 @@ export default function FamilyPage() {
       <NavBar />
       <OfflineBanner />
       <CityNav selected={city} onSelect={setCity} onScrollToToday={scrollToToday} />
+      <div className="max-w-6xl mx-auto w-full px-4 pt-6">
+        <TripMap days={days} />
+      </div>
       <div className="flex-1 flex max-w-6xl mx-auto w-full px-4 py-6 gap-6">
         <div ref={containerRef} className="flex-1 min-w-0 space-y-4">
           {cityDays.map((day) => (
