@@ -1,0 +1,73 @@
+
+<h2 class="sr-only">Europe trip map showing 8 cities: Vienna, Bratislava, Győr, Budapest, Warsaw, Kraków, Paris, and London</h2>
+
+<div id="map" style="width:100%;height:520px;border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-tertiary);"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+
+<script>
+const cities = [
+  { name: "Vienna",     country: "Austria",    lat: 48.2082, lng: 16.3738, order: 1 },
+  { name: "Bratislava", country: "Slovakia",   lat: 48.1486, lng: 17.1077, order: 2 },
+  { name: "Győr",       country: "Hungary",    lat: 47.6875, lng: 17.6504, order: 3 },
+  { name: "Budapest",   country: "Hungary",    lat: 47.4979, lng: 19.0402, order: 4 },
+  { name: "Warsaw",     country: "Poland",     lat: 52.2297, lng: 21.0122, order: 5 },
+  { name: "Kraków",     country: "Poland",     lat: 50.0647, lng: 19.9450, order: 6 },
+  { name: "Paris",      country: "France",     lat: 48.8566, lng: 2.3522,  order: 7 },
+  { name: "London",     country: "UK",         lat: 51.5074, lng: -0.1278, order: 8 },
+];
+
+const map = L.map('map', { zoomControl: true }).setView([49.5, 12], 5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 18
+}).addTo(map);
+
+const latlngs = cities.map(c => [c.lat, c.lng]);
+L.polyline(latlngs, { color: '#7F77DD', weight: 2.5, opacity: 0.7, dashArray: '6,6' }).addTo(map);
+
+cities.forEach((city) => {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="
+      background:#534AB7;
+      color:#fff;
+      border-radius:50%;
+      width:28px;height:28px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:13px;font-weight:500;
+      border:2px solid #fff;
+      box-shadow:0 1px 4px rgba(0,0,0,0.25);
+      font-family:sans-serif;
+    ">${city.order}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14]
+  });
+
+  const marker = L.marker([city.lat, city.lng], { icon }).addTo(map);
+  marker.bindTooltip(
+    `<b>${city.name}</b><br><span style="color:#666">${city.country}</span>`,
+    { permanent: true, direction: 'top', offset: [0, -16], className: 'city-label' }
+  ).openTooltip();
+});
+
+const style = document.createElement('style');
+style.textContent = `
+  .city-label {
+    background: white !important;
+    border: 0.5px solid #ccc !important;
+    border-radius: 6px !important;
+    padding: 3px 7px !important;
+    font-size: 12px !important;
+    font-family: sans-serif !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12) !important;
+    white-space: nowrap !important;
+  }
+  .city-label::before { display: none !important; }
+  .leaflet-tooltip-top.city-label::before { display: none !important; }
+  .leaflet-tooltip.city-label::before { border-top-color: #ccc !important; }
+`;
+document.head.appendChild(style);
+</script>
